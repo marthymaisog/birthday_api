@@ -1,6 +1,6 @@
 # Python + Jenkins 
 
-## Problem specification
+# Problem specification
 
 ```
 
@@ -32,13 +32,13 @@ Note: Use the storage or DB of your choice.
 
 ```
 
-### Tools, repos and deloyments 
+# Tools, repos and deloyments 
 
-## Birthday API Application
+# Birthday API Application
 
 A simple Kubernetes-based application that manages user birthdays through REST APIs, deployed using Helm on Minikube.
 
-### Features
+# Features
 '''
 - Create/update user birthdays via PUT requests
 - Get birthday countdown messages via GET requests
@@ -46,7 +46,7 @@ A simple Kubernetes-based application that manages user birthdays through REST A
 - Health checks for Kubernetes
 - Helm chart for easy deployment
 '''
-### Prerequisites
+# Prerequisites
 '''
 - [Minikube](https://minikube.sigs.k8s.io/docs/start/)
 - [Helm](https://helm.sh/docs/intro/install/)
@@ -54,9 +54,9 @@ A simple Kubernetes-based application that manages user birthdays through REST A
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
 
 '''
-### Quick Start
+# Quick Start
 
-### 1. Clone Repository
+# 1. Clone Repository
 ```
 bash
 git clone [your-repository-url]
@@ -65,13 +65,13 @@ cd titanos/php-birthday-app
 
 ```
 
-### 2. Start Minikube Cluster
+# 2. Start Minikube Cluster
 minikube start
 eval $(minikube docker-env)  # Use Minikube's Docker daemon
 
 '''
 
-### 3. Build & Deploy
+# 3. Build & Deploy
 
 docker build -t birthday-app-python:latest .
 helm install birthday-app-python ./helm-chart
@@ -86,7 +86,7 @@ Endpoint	Method	Description	Example Request Body
 
 '''
 
-### Troubleshooting Guide
+# Troubleshooting Guide
 Common Errors & Fixes
 Image Build Failures
 
