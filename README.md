@@ -32,26 +32,28 @@ Note: Use the storage or DB of your choice.
 
 ```
 
-## Tools, repos and deloyments 
+### Tools, repos and deloyments 
 
-# Birthday API Application
+## Birthday API Application
 
 A simple Kubernetes-based application that manages user birthdays through REST APIs, deployed using Helm on Minikube.
 
-## Features
+### Features
+'''
 - Create/update user birthdays via PUT requests
 - Get birthday countdown messages via GET requests
 - Persistent SQLite storage
 - Health checks for Kubernetes
 - Helm chart for easy deployment
-
-## Prerequisites
+'''
+### Prerequisites
+'''
 - [Minikube](https://minikube.sigs.k8s.io/docs/start/)
 - [Helm](https://helm.sh/docs/intro/install/)
 - [Docker](https://docs.docker.com/get-docker/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
-
-## Quick Start
+'''
+### Quick Start
 
 ### 1. Clone Repository
 ```
