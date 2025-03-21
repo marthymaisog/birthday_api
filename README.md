@@ -34,35 +34,91 @@ Note: Use the storage or DB of your choice.
 
 ## Tools, repos and deloyments 
 
+# Birthday API Application
 
+A simple Kubernetes-based application that manages user birthdays through REST APIs, deployed using Helm on Minikube.
 
-## Project structure 
-
-
-
-## How to run and test locally
-
-
-
-## How to run and test via docker-compose
-```bash
-docker-compose up test_server
-docker-compose up run_server
-```
+## Features
+- Create/update user birthdays via PUT requests
+- Get birthday countdown messages via GET requests
+- Persistent SQLite storage
+- Health checks for Kubernetes
+- Helm chart for easy deployment
 
 ## Prerequisites
-```bash
-pip install -r requirements.txt
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+- [Helm](https://helm.sh/docs/intro/install/)
+- [Docker](https://docs.docker.com/get-docker/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
+
+## Quick Start
+
+### 1. Clone Repository
+```
+bash
+git clone [your-repository-url]
+cd titanos/php-birthday-app
+
+
 ```
 
-## Setting up
+### 2. Start Minikube Cluster
+minikube start
+eval $(minikube docker-env)  # Use Minikube's Docker daemon
 
-### OSX
-```bash
-brew update
-brew install python
-pip install -U pytest
-pytest --version
-pip install -r requirements.txt
-echo 'export PATH=/usr/local/opt/python/libexec/bin:/Users/Ivan/Library/Python/3.7/bin:$PATH' >> ~/.bash_profile
-```
+'''
+
+### 3. Build & Deploy
+
+docker build -t birthday-app-python:latest .
+helm install birthday-app-python ./helm-chart
+kubectl port-forward svc/birthday-app-python-service 8080:5000
+
+API Documentation
+Endpoint	Method	Description	Example Request Body
+/hello/<name>	PUT	Create/update birthday	{"dateOfBirth": "1990-05-15"}
+/hello/<name>	GET	Get birthday message	-
+/health	GET	Service health check	-
+
+
+'''
+
+### Troubleshooting Guide
+Common Errors & Fixes
+Image Build Failures
+
+# Rebuild with clean cache
+docker build --no-cache -t birthday-app-python:latest .
+
+kubectl patch pvc birthday-app-python-pvc -p '{"metadata":{"finalizers":null}}'
+kubectl delete pvc birthday-app-python-pvc --force
+
+# Full cleanup command
+helm uninstall birthday-app-python; \
+kubectl delete svc birthday-app-python-service; \
+kubectl delete secret -l owner=helm
+
+# Reset Minikube networking
+minikube ssh -- sudo systemctl restart docker
+minikube delete && minikube start
+
+### Upgrade Deployment
+docker build -t birthday-app-python:latest .
+helm upgrade birthday-app-python ./helm-chart
+
+### Database Operation 
+
+# Export database
+kubectl exec deployment/birthday-app-python -- sqlite3 /data/birthdays.db .dump > backup.sql
+
+# Import database
+kubectl exec -i deployment/birthday-app-python -- sqlite3 /data/birthdays.db < backup.sql
+
+### Clean Up
+
+helm uninstall birthday-app
+kubectl delete pvc birthday-app-python-pvc
+minikube stop
+
+'''
+
