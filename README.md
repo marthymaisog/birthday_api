@@ -1,4 +1,3 @@
-# Python + Jenkins 
 
 # Problem specification
 
