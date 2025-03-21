@@ -1,10 +1,11 @@
 '''
 ![System Architecture Diagram](./images/system-architecture.png)
+
 '''
 
 ### Architecture Components
 '''
-1. Global Layer (Edge Services)
+## 1. Global Layer (Edge Services)
 
 Amazon CloudFront:
 
@@ -16,7 +17,11 @@ Route 53:
 
 DNS management with health checks for failover routing.
 
-2. Regional Layer (VPC)
+'''
+
+## 2. Regional Layer (VPC)
+
+'''
 
 VPC:
 
@@ -26,7 +31,11 @@ Private subnets for internal resources.
 
 Multi-AZ deployment across 3 Availability Zones.
 
-3. Compute & Orchestration
+'''
+
+## 3. Compute & Orchestration
+
+'''
 
 Amazon EKS Cluster:
 
@@ -44,7 +53,11 @@ Routes traffic to EKS pods via Kubernetes Ingress.
 
 SSL termination using AWS Certificate Manager (ACM).
 
-4. Data Layer
+'''
+
+## 4. Data Layer
+
+'''
 
 Amazon Aurora (PostgreSQL):
 
@@ -56,7 +69,11 @@ Amazon ElastiCache (Redis):
 
 In-memory caching for high-throughput API requests.
 
-5. Security & Compliance
+'''
+
+## 5. Security & Compliance
+
+'''
 
 Security Groups & NACLs:
 
@@ -70,7 +87,11 @@ AWS Secrets Manager:
 
 Securely stores database credentials.
 
-6. Monitoring & Operations
+'''
+
+## 6. Monitoring & Operations
+
+'''
 
 Amazon CloudWatch:
 
@@ -86,7 +107,11 @@ Prometheus/Grafana:
 
 Custom Kubernetes monitoring dashboard.
 
-7. CI/CD Pipeline
+'''
+
+## 7. CI/CD Pipeline
+
+'''
 
 AWS CodePipeline:
 
@@ -104,7 +129,11 @@ Helm Charts:
 
 Deploy updates to EKS via helm upgrade.
 
-8. Backup & Disaster Recovery
+'''
+
+## 8. Backup & Disaster Recovery
+
+'''
 
 Amazon S3:
 

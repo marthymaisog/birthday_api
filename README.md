@@ -52,6 +52,7 @@ A simple Kubernetes-based application that manages user birthdays through REST A
 - [Helm](https://helm.sh/docs/intro/install/)
 - [Docker](https://docs.docker.com/get-docker/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
+
 '''
 ### Quick Start
 
