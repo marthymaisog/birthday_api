@@ -1,0 +1,19 @@
+replicaCount: 1
+image:
+  repository: birthday-app
+  tag: "0.1"
+  pullPolicy: Never
+service:
+  type: ClusterIP
+  port: 80
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  storageSize: 1Gi
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "256Mi"
+    cpu: "200m"

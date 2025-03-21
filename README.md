@@ -20,7 +20,13 @@ Request: Get /hello/<username> Response: 200 Ok Response examples:
 
 A. If username’s birthday is in N days: { “message”: “Hello, <username>! Your birthday is in N day(s)”} 
 
-B. If username’s birthday is today: { “message”: “Hello, <username>! Happy birthday!” } Note: Use the storage or DB of your choice. 2- Code a simple helm chart and deploy this application into a small local kubernetes cluster (like minikube or k3s) 3- Produce a system diagram of how this solution would be deployed into AWS. You can consider that the application is of high criticality and high usage, so add
+B. If username’s birthday is today: { “message”: “Hello, <username>! Happy birthday!” } 
+
+Note: Use the storage or DB of your choice. 
+
+2- Code a simple helm chart and deploy this application into a small local kubernetes cluster (like minikube or k3s) 
+
+3- Produce a system diagram of how this solution would be deployed into AWS. You can consider that the application is of high criticality and high usage, so add
 
 
 
