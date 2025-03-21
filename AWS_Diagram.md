@@ -3,9 +3,9 @@
 
 '''
 
-### Architecture Components
+# Architecture Components
 '''
-## 1. Global Layer (Edge Services)
+# 1. Global Layer (Edge Services)
 
 Amazon CloudFront:
 
@@ -19,7 +19,7 @@ DNS management with health checks for failover routing.
 
 '''
 
-## 2. Regional Layer (VPC)
+# 2. Regional Layer (VPC)
 
 '''
 
@@ -33,7 +33,7 @@ Multi-AZ deployment across 3 Availability Zones.
 
 '''
 
-## 3. Compute & Orchestration
+# 3. Compute & Orchestration
 
 '''
 
@@ -55,7 +55,7 @@ SSL termination using AWS Certificate Manager (ACM).
 
 '''
 
-## 4. Data Layer
+# 4. Data Layer
 
 '''
 
@@ -71,7 +71,7 @@ In-memory caching for high-throughput API requests.
 
 '''
 
-## 5. Security & Compliance
+# 5. Security & Compliance
 
 '''
 
@@ -89,7 +89,7 @@ Securely stores database credentials.
 
 '''
 
-## 6. Monitoring & Operations
+# 6. Monitoring & Operations
 
 '''
 
@@ -109,7 +109,7 @@ Custom Kubernetes monitoring dashboard.
 
 '''
 
-## 7. CI/CD Pipeline
+# 7. CI/CD Pipeline
 
 '''
 
@@ -135,7 +135,7 @@ Deploy updates to EKS via helm upgrade.
 
 '''
 
-Amazon S3:
+## Amazon S3:
 
 Stores Terraform state, application logs, and database backups.
 
@@ -145,7 +145,12 @@ Cross-Region Replication:
 
 RDS snapshots and S3 buckets replicated to a secondary region.
 
-Data Flow
+'''
+
+# Data Flow
+
+'''
+
 User → CloudFront (cached response or SSL termination) → Route 53 → ALB.
 
 ALB routes to EKS pods across AZs.
@@ -155,8 +160,11 @@ Pods query ElastiCache (cache layer) or Aurora (persistent data).
 CI/CD updates trigger CodePipeline → ECR → EKS via Helm.
 
 CloudWatch/X-Ray monitor performance; auto-scaling adjusts resources.
+'''
 
-Resilience Features
+# Resilience Features
+'''
+
 Multi-AZ Redundancy: All critical services (EKS, RDS, ElastiCache) span 3 AZs.
 
 Auto-Scaling: Pods (HPA) and nodes (Cluster Autoscaler) scale based on load.
@@ -165,13 +173,16 @@ Immutable Infrastructure: Containerized deployments with rolling updates.
 
 Backups: Daily RDS snapshots and continuous S3 versioning.
 
-Cost Optimization
+# Cost Optimization
+'''
 Spot Instances: For non-critical EKS worker nodes.
 
 Reserved Instances: For long-running RDS/Aurora databases.
 
 Lifecycle Policies: Archive old S3 data to Glacier.
 
-This architecture ensures high availability, security, and scalability for a mission-critical application on AWS.
+'''
+
+### This architecture ensures high availability, security, and scalability for a mission-critical application on AWS.
 
 '''
