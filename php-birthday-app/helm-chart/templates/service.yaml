@@ -3,9 +3,9 @@ kind: Service
 metadata:
   name: {{ .Chart.Name }}-service
 spec:
-  type: {{ .Values.service.type | default "ClusterIP" }}
+  type: {{ .Values.service.type }}
   ports:
   - port: {{ .Values.service.port }}
-    targetPort: 80
+    targetPort: 5000
   selector:
     app: {{ .Chart.Name }}

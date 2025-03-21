@@ -1,15 +1,16 @@
 replicaCount: 1
 image:
-  repository: birthday-app
-  tag: "0.1"
-  pullPolicy: Never
+  repository: birthday-app-python
+  tag: latest
+  pullPolicy: IfNotPresent
 service:
   type: ClusterIP
-  port: 80
+  port: 5000
 persistence:
   enabled: true
   accessMode: ReadWriteOnce
   storageSize: 1Gi
+  mountPath: /data
 resources:
   requests:
     memory: "128Mi"

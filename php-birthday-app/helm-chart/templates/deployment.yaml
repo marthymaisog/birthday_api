@@ -12,17 +12,33 @@ spec:
       labels:
         app: {{ .Chart.Name }}
     spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
-        - containerPort: 80
+        - containerPort: 5000
         volumeMounts:
         - name: data
-          mountPath: /var/www/html
+          mountPath: {{ .Values.persistence.mountPath }}
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5
       volumes:
       - name: data
         persistentVolumeClaim:
