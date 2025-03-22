@@ -75,13 +75,19 @@ eval $(minikube docker-env)  # Use Minikube's Docker daemon
 # 3. Build & Deploy
 
 docker build -t birthday-app-python:latest .
+
 helm install birthday-app-python ./helm-chart
+
 kubectl port-forward svc/birthday-app-python-service 8080:5000
 
 API Documentation
+
 Endpoint	Method	Description	Example Request Body
+
 /hello/<name>	PUT	Create/update birthday	{"dateOfBirth": "1990-05-15"}
+
 /hello/<name>	GET	Get birthday message	-
+
 /health	GET	Service health check	-
 
 
@@ -95,19 +101,24 @@ Image Build Failures
 docker build --no-cache -t birthday-app-python:latest .
 
 kubectl patch pvc birthday-app-python-pvc -p '{"metadata":{"finalizers":null}}'
+
 kubectl delete pvc birthday-app-python-pvc --force
 
 # Full cleanup command
-helm uninstall birthday-app-python; \
-kubectl delete svc birthday-app-python-service; \
+helm uninstall birthday-app-python; 
+
+kubectl delete svc birthday-app-python-service; 
+
 kubectl delete secret -l owner=helm
 
 # Reset Minikube networking
 minikube ssh -- sudo systemctl restart docker
+
 minikube delete && minikube start
 
 ### Upgrade Deployment
 docker build -t birthday-app-python:latest .
+
 helm upgrade birthday-app-python ./helm-chart
 
 ### Database Operation 
