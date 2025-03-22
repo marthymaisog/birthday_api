@@ -58,14 +58,14 @@ A simple Kubernetes-based application that manages user birthdays through REST A
 # Quick Start
 
 # 1. Clone Repository
-```
+```bash
 
 git clone https://github.com/marthymaisog/titanos.git
 
 cd titanos/php-birthday-app
 
 
-```
+
 
 # 2. Start Minikube Cluster
 '''
@@ -82,7 +82,7 @@ eval $(minikube docker-env)  # Use Minikube's Docker daemon
 
 docker build -t birthday-app-python:latest .
 
-helm install birthday-app-python ./helm-chart
+helm install birthday-app ./helm-chart
 
 kubectl port-forward svc/birthday-app-python-service 8080:5000
 
