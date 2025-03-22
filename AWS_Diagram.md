@@ -4,7 +4,7 @@
 ![AWS Infrastructure Diagram](./images/infra.png)
 
 
-# **How to Implement the Architecture in AWS**
+# **Implementation**
 
 ## Below are the components and how they can be implemented using Terraform:
 
