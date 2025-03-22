@@ -4,183 +4,145 @@
 ![AWS Infrastructure Diagram](./images/infra.png)
 
 
-
-# Architecture Components
-
-# 1. Global Layer (Edge Services)
-
-## Amazon CloudFront:
-
-CDN for caching static assets and API responses at edge locations.
-
-Integrated with AWS WAF and Shield for DDoS protection.
-
-## Route 53:
-
-DNS management with health checks for failover routing.
-
-
-
-# 2. Regional Layer (VPC)
-
-
-## VPC:
-
-Public subnets for internet-facing components.
-
-Private subnets for internal resources.
-
-Multi-AZ deployment across 3 Availability Zones.
-
-
-# 3. Compute & Orchestration
-
-## Amazon EKS Cluster:
-
-Managed Kubernetes cluster in private subnets.
-
-Node groups with Auto Scaling Groups (ASG) for EC2 instances.
-
-Horizontal Pod Autoscaler (HPA) for dynamic scaling.
-
-IAM Roles for Service Accounts (IRSA) for secure AWS access.
-
-
-## Application Load Balancer (ALB):
-
-Routes traffic to EKS pods via Kubernetes Ingress.
-
-SSL termination using AWS Certificate Manager (ACM).
-
-
-# 4. Data Layer
-
-## Amazon Aurora (PostgreSQL):
-
-Multi-AZ relational database with read replicas.
-
-Automated backups with point-in-time recovery.
-
-
-## Amazon ElastiCache (Redis):
-
-In-memory caching for high-throughput API requests.
-
-
-
-# 5. Security & Compliance
-
-
-## Security Groups & NACLs:
-
-Restrict traffic between layers (e.g., ALB → EKS, EKS → RDS).
-
-
-## AWS Key Management Service (KMS):
-
-Encrypts data at rest (RDS, EBS, ElastiCache).
-
-
-## AWS Secrets Manager:
-
-Securely stores database credentials.
-
-
-# 6. Monitoring & Operations
-
-## Amazon CloudWatch:
-
-Collects metrics/logs from EKS, ALB, RDS, and ElastiCache.
-
-Alarms for auto-scaling triggers.
-
-## AWS X-Ray:
-
-Traces requests across microservices.
-
-## Prometheus/Grafana:
-
-Custom Kubernetes monitoring dashboard.
-
-
-
-# 7. CI/CD Pipeline
-
-
-## AWS CodePipeline:
-
-Triggers builds on code commits (GitHub integration).
-
-
-## AWS CodeBuild:
-
-Runs tests and builds Docker images.
-
-
-## Amazon ECR:
-
-Stores container images for EKS deployments.
-
-
-## Helm Charts:
-
-Deploy updates to EKS via helm upgrade.
-
-
-
-# 8. Backup & Disaster Recovery
-
-
-
-## Amazon S3:
-
-Stores Terraform state, application logs, and database backups.
-
-Versioning enabled for rollbacks.
-
-
-## Cross-Region Replication:
-
-RDS snapshots and S3 buckets replicated to a secondary region.
-
-
-
-# Data Flow
-
-
-
-User → CloudFront (cached response or SSL termination) → Route 53 → ALB.
-
-ALB routes to EKS pods across AZs.
-
-Pods query ElastiCache (cache layer) or Aurora (persistent data).
-
-CI/CD updates trigger CodePipeline → ECR → EKS via Helm.
-
-CloudWatch/X-Ray monitor performance; auto-scaling adjusts resources.
-
-
-# Resilience Features
-
-
-Multi-AZ Redundancy: All critical services (EKS, RDS, ElastiCache) span 3 AZs.
-
-Auto-Scaling: Pods (HPA) and nodes (Cluster Autoscaler) scale based on load.
-
-Immutable Infrastructure: Containerized deployments with rolling updates.
-
-Backups: Daily RDS snapshots and continuous S3 versioning.
-
-
-# Cost Optimization
-
-Spot Instances: For non-critical EKS worker nodes.
-
-Reserved Instances: For long-running RDS/Aurora databases.
-
-Lifecycle Policies: Archive old S3 data to Glacier.
-
-
-
-# This architecture ensures high availability, security, and scalability for a mission-critical application on AWS.
+# **How to Implement the Architecture in AWS**
+
+## Below are the components and how they can be implemented using Terraform:
+
+### **1. Global Layer (Edge Services)**
+- **Amazon CloudFront**:  
+  ```terraform
+  resource "aws_cloudfront_distribution" "cdn" {
+    origin {
+      domain_name = aws_alb.alb.dns_name
+      origin_id   = "ALBOrigin"
+    }
+    enabled = true
+    default_cache_behavior {
+      target_origin_id       = "ALBOrigin"
+      viewer_protocol_policy = "redirect-to-https"
+    }
+  }
+  ```
+- **Route 53**:  
+  ```terraform
+  resource "aws_route53_record" "dns" {
+    zone_id = "your_zone_id"
+    name    = "api.example.com"
+    type    = "A"
+    alias {
+      name                   = aws_alb.alb.dns_name
+      zone_id                = aws_alb.alb.zone_id
+      evaluate_target_health = true
+    }
+  }
+  ```
+
+### **2. Regional Layer (VPC)**
+- **VPC and Subnets**:
+  ```terraform
+  resource "aws_vpc" "main" {
+    cidr_block = "10.0.0.0/16"
+  }
+  resource "aws_subnet" "public" {
+    vpc_id = aws_vpc.main.id
+    cidr_block = "10.0.1.0/24"
+    map_public_ip_on_launch = true
+  }
+  resource "aws_subnet" "private" {
+    vpc_id = aws_vpc.main.id
+    cidr_block = "10.0.2.0/24"
+  }
+  ```
+
+### **3. Compute & Orchestration**
+- **Amazon EKS Cluster**:
+  ```terraform
+  resource "aws_eks_cluster" "eks" {
+    name     = "titan-cluster"
+    role_arn = aws_iam_role.eks_role.arn
+    vpc_config {
+      subnet_ids = [aws_subnet.private.id]
+    }
+  }
+  ```
+- **Application Load Balancer (ALB)**:
+  ```terraform
+  resource "aws_lb" "alb" {
+    name               = "eks-alb"
+    load_balancer_type = "application"
+    security_groups    = [aws_security_group.alb_sg.id]
+    subnets           = [aws_subnet.public.id]
+  }
+  ```
+
+### **4. Data Layer**
+- **Amazon Aurora (PostgreSQL)**
+  ```terraform
+  resource "aws_rds_cluster" "aurora" {
+    cluster_identifier = "birthday-db"
+    engine            = "aurora-postgresql"
+    master_username   = "admin"
+    master_password   = "securepassword"
+    backup_retention_period = 7
+  }
+  ```
+- **Amazon ElastiCache (Redis)**
+  ```terraform
+  resource "aws_elasticache_cluster" "cache" {
+    cluster_id           = "titan-cache"
+    engine              = "redis"
+    node_type           = "cache.t3.micro"
+    num_cache_nodes     = 1
+  }
+  ```
+
+### **5. Security & Compliance**
+- **Security Groups & Secrets**
+  ```terraform
+  resource "aws_secretsmanager_secret" "db_secret" {
+    name = "db-credentials"
+  }
+  ```
+
+### **6. Monitoring & Operations**
+- **Amazon CloudWatch**
+  ```terraform
+  resource "aws_cloudwatch_log_group" "eks_logs" {
+    name = "/aws/eks/titan-cluster"
+  }
+  ```
+
+### **7. CI/CD Pipeline**
+- **ECR (Docker Registry)**
+  ```terraform
+  resource "aws_ecr_repository" "repo" {
+    name = "birthday-app"
+  }
+  ```
+- **CodePipeline & CodeBuild**
+  ```terraform
+  resource "aws_codepipeline" "pipeline" {
+    name = "birthday-app-pipeline"
+    role_arn = aws_iam_role.pipeline_role.arn
+  }
+  ```
+
+### **8. Backup & Disaster Recovery**
+- **RDS Snapshots**
+  ```terraform
+  resource "aws_rds_cluster_snapshot" "snapshot" {
+    db_cluster_identifier = aws_rds_cluster.aurora.id
+    db_cluster_snapshot_identifier = "aurora-snapshot"
+  }
+  ```
+- **S3 for Logs & Backups**
+  ```terraform
+  resource "aws_s3_bucket" "logs" {
+    bucket = "titan-logs"
+  }
+  ```
+
+---
+
+# This Terraform setup ensures a highly available and resilient AWS deployment for the Titan OS application. Let me know if you need additional refinements! 🚀
 
