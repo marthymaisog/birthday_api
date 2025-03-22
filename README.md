@@ -139,3 +139,8 @@ minikube stop
 
 '''
 
+# 2. Helm Chart - https://github.com/marthymaisog/titanos/tree/main/php-birthday-app/helm-chart
+
+# 3. AWS Diagram - https://github.com/marthymaisog/titanos/blob/main/AWS_Diagram.md
+
+
