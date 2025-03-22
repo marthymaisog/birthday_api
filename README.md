@@ -259,6 +259,6 @@ spec:
 ---
 
 - **OUTPUT**:
-  ```
+  
   ![Output](./images/birthday.png)
-  ```
+  
