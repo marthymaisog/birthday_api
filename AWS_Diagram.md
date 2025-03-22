@@ -1,7 +1,7 @@
 
-# AWS Infrastructure Architecture
+# AWS Infrastructure Diagram
 
-![AWS Infrastructure Architecture](./images/infra.png)
+![AWS Infrastructure Diagram](./images/infra.png)
 
 
 
