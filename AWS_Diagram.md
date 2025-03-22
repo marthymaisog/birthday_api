@@ -144,5 +144,5 @@
 
 ---
 
-# This Terraform setup ensures a highly available and resilient AWS deployment for the Titan OS application. Let me know if you need additional refinements! 🚀
+# This Terraform setup ensures a highly available and resilient AWS deployment 🚀
 
