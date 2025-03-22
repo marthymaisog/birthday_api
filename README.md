@@ -64,21 +64,21 @@ git clone https://github.com/marthymaisog/titanos.git
 
 cd titanos/php-birthday-app
 
+```
+
 
 
 
 # 2. Start Minikube Cluster
-'''
-
-
+```bash
 minikube start
 
 eval $(minikube docker-env)  # Use Minikube's Docker daemon
 
-'''
+```
 
 # 3. Build & Deploy
-'''
+```bash
 
 docker build -t birthday-app-python:latest .
 
@@ -86,10 +86,10 @@ helm install birthday-app ./helm-chart
 
 kubectl port-forward svc/birthday-app-python-service 8080:5000
 
-'''
+```
 
 # API Documentation
-'''
+
 Endpoint	Method	Description	Example Request Body
 
 /hello/<name>	PUT	Create/update birthday	{"dateOfBirth": "1990-05-15"}
@@ -99,7 +99,6 @@ Endpoint	Method	Description	Example Request Body
 /health	GET	Service health check	-
 
 
-'''
 
 # Troubleshooting Guide
 Common Errors & Fixes
@@ -145,7 +144,7 @@ kubectl delete pvc birthday-app-python-pvc
 
 minikube stop
 
-'''
+
 
 # 2. Helm Chart 
 
