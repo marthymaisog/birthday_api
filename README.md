@@ -68,7 +68,7 @@ cd titanos/php-birthday-app
 ```
 
 # 2. Start Minikube Cluster
-
+'''
 bash
 minikube start
 eval $(minikube docker-env)  # Use Minikube's Docker daemon
@@ -76,7 +76,7 @@ eval $(minikube docker-env)  # Use Minikube's Docker daemon
 '''
 
 # 3. Build & Deploy
-
+'''
 bash
 docker build -t birthday-app-python:latest .
 
@@ -87,7 +87,7 @@ kubectl port-forward svc/birthday-app-python-service 8080:5000
 '''
 
 # API Documentation
-
+'''
 Endpoint	Method	Description	Example Request Body
 
 /hello/<name>	PUT	Create/update birthday	{"dateOfBirth": "1990-05-15"}
