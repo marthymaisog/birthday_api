@@ -110,23 +110,37 @@ The **Helm Chart** for this application (`./helm-chart`) includes the following 
 Defines metadata about the Helm chart (name, version, description).
 
 ```yaml
+apiVersion: v2
 name: birthday-app-python
-version: 0.1.0
-description: A simple application to manage user birthdays.
+description: Birthday reminder application in Python
+version: 0.2.0
+appVersion: "2.0"
 ```
 
 ### 2. **values.yaml**
 Contains configuration parameters for the application (e.g., container image version, resource limits, service type).
 
 ```yaml
+replicaCount: 1
 image:
   repository: birthday-app-python
   tag: latest
-
-replicas: 2
-
+  pullPolicy: IfNotPresent
 service:
-  type: LoadBalancer
+  type: ClusterIP
+  port: 5000
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  storageSize: 1Gi
+  mountPath: /data
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "256Mi"
+    cpu: "200m"
 ```
 
 ### 3. **Templates/**  
@@ -139,22 +153,48 @@ Defines the Kubernetes deployment for the application.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: birthday-app-python
+  name: {{ .Chart.Name }}
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: birthday-app-python
+      app: {{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: birthday-app-python
+        app: {{ .Chart.Name }}
     spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
       containers:
-        - name: birthday-app-python
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          ports:
-            - containerPort: 5000
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - name: data
+          mountPath: {{ .Values.persistence.mountPath }}
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Chart.Name }}-pvc
 ```
 
 #### **service.yaml**
@@ -164,37 +204,33 @@ Defines how the application is exposed (internally or externally).
 apiVersion: v1
 kind: Service
 metadata:
-  name: birthday-app-python-service
+  name: {{ .Chart.Name }}-service
 spec:
-  selector:
-    app: birthday-app-python
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 5000
   type: {{ .Values.service.type }}
+  ports:
+  - port: {{ .Values.service.port }}
+    targetPort: 5000
+  selector:
+    app: {{ .Chart.Name }}
 ```
 
-#### **ingress.yaml** (Optional)
-Used to route external HTTP/HTTPS traffic to the application. Requires an Ingress Controller (e.g., Nginx, Traefik).
-
-#### **configmap.yaml** (Optional)
-Defines non-sensitive configuration values for the application.
-
-#### **secret.yaml** (Optional)
-Stores sensitive information like API keys or database credentials.
-
-### 4. **helpers.tpl**
-Contains reusable Helm template snippets.
+### 4. **pvc.yaml**
+PersistentVolumeClaim (PVC), which is used to request persistent storage.
 
 ```yaml
-{{- define "birthday-app-python.labels" -}}
-app: birthday-app-python
-{{- end -}}
+{{- if .Values.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Chart.Name }}-pvc
+spec:
+  accessModes:
+    - {{ .Values.persistence.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.storageSize }}
+{{- end }}
 ```
-
-### 5. **values-override.yaml** (Optional)
-Override default values for different environments (e.g., production, staging).
 
 ---
 
