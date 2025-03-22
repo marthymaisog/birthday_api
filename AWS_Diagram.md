@@ -1,7 +1,7 @@
-```
+
 ![System Architecture Diagram](./images/system-architecture.png)
 
-```
+
 
 # Architecture Components
 
