@@ -175,5 +175,5 @@ Lifecycle Policies: Archive old S3 data to Glacier.
 
 
 
-### This architecture ensures high availability, security, and scalability for a mission-critical application on AWS.
+# This architecture ensures high availability, security, and scalability for a mission-critical application on AWS.
 
