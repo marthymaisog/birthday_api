@@ -1,7 +1,3 @@
-# README.md - Titan OS Infrastructure Take-Home Test
-
-## Overview
-Welcome to the Titan OS Infrastructure Take-Home Test! The purpose of this test is to assess how you approach deploying an application into a Kubernetes cluster. This document outlines the solution, including the application, Helm chart components, deployment instructions, and system architecture for an AWS-based deployment.
 
 ---
 
