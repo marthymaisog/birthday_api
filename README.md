@@ -2,7 +2,6 @@
 # Problem specification
 
 ```
-
 1- Code a simple application that exposes the following HTTP based APIs: 
 
 Description: Save/updates a given user name and date of birth in a database. 
@@ -27,7 +26,7 @@ Note: Use the storage or DB of your choice.
 
 3- Produce a system diagram of how this solution would be deployed into AWS. You can consider that the application is of high criticality and high usage, so add
 
-
+```
 
 
 # Tools, repos and deloyments 
