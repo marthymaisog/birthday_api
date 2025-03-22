@@ -1,5 +1,5 @@
 
-![System Architecture Diagram](./images/system-architecture.png)
+![System Architecture Diagram](./images/infra.png)
 
 
 
