@@ -257,3 +257,8 @@ spec:
 - **AWS Diagram**: [GitHub Link](https://github.com/marthymaisog/titanos/blob/main/AWS_Diagram.md)
 
 ---
+
+- **OUTPUT**:
+  ```
+  ![Output](./images/birthday.png)
+  ```
