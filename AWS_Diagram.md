@@ -1,4 +1,6 @@
 
+# AWS Infrastructure Diagram
+
 ![System Architecture Diagram](./images/infra.png)
 
 
@@ -7,13 +9,13 @@
 
 # 1. Global Layer (Edge Services)
 
-Amazon CloudFront:
+## Amazon CloudFront:
 
 CDN for caching static assets and API responses at edge locations.
 
 Integrated with AWS WAF and Shield for DDoS protection.
 
-Route 53:
+## Route 53:
 
 DNS management with health checks for failover routing.
 
@@ -22,7 +24,7 @@ DNS management with health checks for failover routing.
 # 2. Regional Layer (VPC)
 
 
-VPC:
+## VPC:
 
 Public subnets for internet-facing components.
 
@@ -33,8 +35,7 @@ Multi-AZ deployment across 3 Availability Zones.
 
 # 3. Compute & Orchestration
 
-
-Amazon EKS Cluster:
+## Amazon EKS Cluster:
 
 Managed Kubernetes cluster in private subnets.
 
@@ -44,7 +45,8 @@ Horizontal Pod Autoscaler (HPA) for dynamic scaling.
 
 IAM Roles for Service Accounts (IRSA) for secure AWS access.
 
-Application Load Balancer (ALB):
+
+## Application Load Balancer (ALB):
 
 Routes traffic to EKS pods via Kubernetes Ingress.
 
@@ -53,13 +55,14 @@ SSL termination using AWS Certificate Manager (ACM).
 
 # 4. Data Layer
 
-Amazon Aurora (PostgreSQL):
+## Amazon Aurora (PostgreSQL):
 
 Multi-AZ relational database with read replicas.
 
 Automated backups with point-in-time recovery.
 
-Amazon ElastiCache (Redis):
+
+## Amazon ElastiCache (Redis):
 
 In-memory caching for high-throughput API requests.
 
@@ -68,34 +71,34 @@ In-memory caching for high-throughput API requests.
 # 5. Security & Compliance
 
 
-Security Groups & NACLs:
+## Security Groups & NACLs:
 
 Restrict traffic between layers (e.g., ALB → EKS, EKS → RDS).
 
-AWS Key Management Service (KMS):
+
+## AWS Key Management Service (KMS):
 
 Encrypts data at rest (RDS, EBS, ElastiCache).
 
-AWS Secrets Manager:
+
+## AWS Secrets Manager:
 
 Securely stores database credentials.
 
 
 # 6. Monitoring & Operations
 
-
-
-Amazon CloudWatch:
+## Amazon CloudWatch:
 
 Collects metrics/logs from EKS, ALB, RDS, and ElastiCache.
 
 Alarms for auto-scaling triggers.
 
-AWS X-Ray:
+## AWS X-Ray:
 
 Traces requests across microservices.
 
-Prometheus/Grafana:
+## Prometheus/Grafana:
 
 Custom Kubernetes monitoring dashboard.
 
@@ -104,26 +107,28 @@ Custom Kubernetes monitoring dashboard.
 # 7. CI/CD Pipeline
 
 
-
-AWS CodePipeline:
+## AWS CodePipeline:
 
 Triggers builds on code commits (GitHub integration).
 
-AWS CodeBuild:
+
+## AWS CodeBuild:
 
 Runs tests and builds Docker images.
 
-Amazon ECR:
+
+## Amazon ECR:
 
 Stores container images for EKS deployments.
 
-Helm Charts:
+
+## Helm Charts:
 
 Deploy updates to EKS via helm upgrade.
 
 
 
-## 8. Backup & Disaster Recovery
+# 8. Backup & Disaster Recovery
 
 
 
@@ -133,7 +138,8 @@ Stores Terraform state, application logs, and database backups.
 
 Versioning enabled for rollbacks.
 
-Cross-Region Replication:
+
+## Cross-Region Replication:
 
 RDS snapshots and S3 buckets replicated to a secondary region.
 
@@ -164,6 +170,7 @@ Auto-Scaling: Pods (HPA) and nodes (Cluster Autoscaler) scale based on load.
 Immutable Infrastructure: Containerized deployments with rolling updates.
 
 Backups: Daily RDS snapshots and continuous S3 versioning.
+
 
 # Cost Optimization
 
