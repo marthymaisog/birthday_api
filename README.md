@@ -132,7 +132,9 @@ kubectl exec -i deployment/birthday-app-python -- sqlite3 /data/birthdays.db < b
 ### Clean Up
 
 helm uninstall birthday-app
+
 kubectl delete pvc birthday-app-python-pvc
+
 minikube stop
 
 '''
