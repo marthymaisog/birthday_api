@@ -29,7 +29,6 @@ Note: Use the storage or DB of your choice.
 ```
 
 
-# Tools, repos and deloyments 
 
 # Birthday API Application
 
@@ -61,8 +60,6 @@ git clone https://github.com/marthymaisog/titanos.git
 cd titanos/php-birthday-app
 
 ```
-
-
 
 
 # 2. Start Minikube Cluster
