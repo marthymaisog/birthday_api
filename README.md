@@ -27,7 +27,7 @@ Note: Use the storage or DB of your choice.
 
 3- Produce a system diagram of how this solution would be deployed into AWS. You can consider that the application is of high criticality and high usage, so add
 
-
+![Birthday](./images/birthday.png)
 
 ```
 
