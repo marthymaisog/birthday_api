@@ -1,5 +1,5 @@
 apiVersion: v2
 name: birthday-app-python
-description: Birthday reminder application (Python version)
+description: Birthday reminder application in Python
 version: 0.2.0
 appVersion: "2.0"
