@@ -60,7 +60,7 @@ A simple Kubernetes-based application that manages user birthdays through REST A
 # 1. Clone Repository
 ```
 bash
-git clone [your-repository-url]
+git clone git@github.com:marthymaisog/titanos.git
 cd titanos/php-birthday-app
 
 
