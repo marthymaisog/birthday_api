@@ -99,6 +99,7 @@ Endpoint	Method	Description	Example Request Body
 
 # Troubleshooting Guide
 Common Errors & Fixes
+
 Image Build Failures
 
 # Rebuild with clean cache
