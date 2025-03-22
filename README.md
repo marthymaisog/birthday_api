@@ -75,7 +75,7 @@ eval $(minikube docker-env)  # Use Minikube's Docker daemon
 
 docker build -t birthday-app-python:latest .
 
-helm install birthday-app ./helm-chart
+helm install birthday-app-python ./helm-chart
 
 kubectl port-forward svc/birthday-app-python-service 8080:5000
 
@@ -135,7 +135,7 @@ kubectl exec -i deployment/birthday-app-python -- sqlite3 /data/birthdays.db < b
 
 ### Clean Up
 
-helm uninstall birthday-app
+helm uninstall birthday-app-python
 
 kubectl delete pvc birthday-app-python-pvc
 
