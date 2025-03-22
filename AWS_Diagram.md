@@ -6,7 +6,7 @@
 
 # **Implementation**
 
-## Below are the components and how they can be implemented using Terraform:
+## Components and Implemention using Terraform:
 
 ### **1. Global Layer (Edge Services)**
 - **Amazon CloudFront**:  
