@@ -221,18 +221,18 @@
 
   resource "helm_release" "app" {
     name       = "birthday-app"
-    repository = "repository = "oci://<aws_account_id>.dkr.ecr.<region>.amazonaws.com/my-helm-repo" 
+    repository = "repository = oci://<aws_account_id>.dkr.ecr.<region>.amazonaws.com/my-helm-repo" 
     chart      = "./helm-chart"
 
-    set {
-      name  = "image.repository"
-      value = "<ECR-Repo-URL>"
-    }
+      set {
+        name  = "image.repository"
+        value = "<ECR-Repo-URL>"
+      }
 
-    set {
-      name  = "service.type"
-      value = "LoadBalancer"
-    }
+      set {
+        name  = "service.type"
+        value = "LoadBalancer"
+      }
 
     depends_on = [aws_eks_cluster.main]
   }
