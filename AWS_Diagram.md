@@ -221,7 +221,7 @@
 
   resource "helm_release" "app" {
     name       = "birthday-app"
-    repository = "repository = "oci://<aws_account_id>.dkr.ecr.<region>.amazonaws.com/my-helm-repo" ##OCI (Open Container Initiative) 
+    repository = "repository = "oci://<aws_account_id>.dkr.ecr.<region>.amazonaws.com/my-helm-repo" 
     chart      = "./helm-chart"
 
     set {
