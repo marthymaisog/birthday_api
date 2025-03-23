@@ -9,7 +9,7 @@
 ## Components and Implemention using Terraform:
 
 ### **1. Global Layer (Edge Services)**
-- **Amazon CloudFront**:  
+- **Amazon CloudFront - CDN for caching static assets and API responses at edge locations. Integrated with AWS WAF and Shield for DDoS protection.**:  
   ```terraform
   resource "aws_cloudfront_distribution" "cdn" {
     origin {
@@ -23,7 +23,7 @@
     }
   }
   ```
-- **Route 53**:  
+- **Route 53 - DNS management with health checks for failover routing.**:  
   ```terraform
   resource "aws_route53_record" "dns" {
     zone_id = "your_zone_id"
@@ -38,7 +38,7 @@
   ```
 
 ### **2. Regional Layer (VPC)**
-- **VPC and Subnets**:
+- **VPC and Subnets - Public subnets for internet-facing components. Private subnets for internal resources. Multi-AZ deployment across 3 Availability Zones.**:
   ```terraform
   resource "aws_vpc" "main" {
     cidr_block = "10.0.0.0/16"
