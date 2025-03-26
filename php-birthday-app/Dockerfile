@@ -18,3 +18,7 @@ RUN mkdir -p /data && \
 USER 1000
 
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--access-logfile", "-", "--error-logfile", "-", "app:app"]
+
+# Add these lines after COPY requirements.txt app.py ./
+COPY templates/ ./templates/
+COPY static/ ./static/

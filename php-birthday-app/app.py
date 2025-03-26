@@ -1,8 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from datetime import datetime
 import sqlite3
 import re
 import os
+
 
 app = Flask(__name__)
 DATABASE = os.path.join('/data', 'birthdays.db')
@@ -98,6 +99,23 @@ def get_birthday(username):
     except Exception as e:
         app.logger.error(f"Date calculation error: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/users', methods=['GET'])
+def get_all_users():
+    try:
+        with get_db() as db:
+            users = db.execute('SELECT * FROM users').fetchall()
+            return jsonify([dict(user) for user in users])
+    except sqlite3.Error as e:
+        app.logger.error(f"Database error: {str(e)}")
+        return jsonify({'error': 'Database operation failed'}), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
